@@ -1,6 +1,7 @@
 class StoryBox extends React.Component {
     render() {
         const now = new Date();
+        const topicsList = ['HTML', 'JavaScript', 'React'];
 
         return(
             <div>
@@ -8,7 +9,10 @@ class StoryBox extends React.Component {
                 <p className="text-success">
                     Current time: {now.toTimeString()}
                 </p>
-            </div>
+                <ul>
+                    {topicsList.map(topic => <li>{topic}</li>)}
+                </ul>
+            </div>  
         );
     }
 }
