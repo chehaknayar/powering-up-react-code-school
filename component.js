@@ -47,7 +47,7 @@ class CommentBox extends React.Component {
                 <h3 className="text-uppercase text-info">Comments</h3>
                 <hr/>
 
-                <h4 className="text-uppercase text-muted">{comments.length} comments</h4>
+                <h4 className="text-uppercase text-muted">{this._getCommentsTitle(comments.length)}</h4>
                 <br/>
                 <br/>
 
@@ -58,7 +58,6 @@ class CommentBox extends React.Component {
         );
     }
 
-
     _getComments() {
         const commentList = [
             {id: 1, author: 'Morgan McCircuit', body: 'Great picture!'},
@@ -67,6 +66,16 @@ class CommentBox extends React.Component {
         return commentList.map(comment => {
             return (<Comment author={comment.author} body={comment.body} key={comment.id} />);
         });
+    }
+
+    _getCommentsTitle(commentCount) {
+        if(commentCount === 0) {
+            return 'No comments yet';
+        } else if(commentCount === 1) {
+            return '1 comment';
+        } else {
+            return `${commentCount} comments`;
+        }
     }
 }
 
