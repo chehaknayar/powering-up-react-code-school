@@ -1,6 +1,15 @@
 class StoryBox extends React.Component {
     render() {
-        return(<div>Sotry Box</div>);
+        const now = new Date();
+
+        return(
+            <div>
+                <h3>Stories App</h3>
+                <p className="text-success">
+                    Current time: {now.toTimeString()}
+                </p>
+            </div>
+        );
     }
 }
 
