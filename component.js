@@ -1,26 +1,3 @@
-class StoryBox extends React.Component {
-    render() {
-        const now = new Date();
-        const topicsList = ['HTML', 'JavaScript', 'React'];
-
-        return(
-            <div>
-                <h3>Stories App</h3>
-                <p className="text-success">
-                    Current time: {now.toTimeString()}
-                </p>
-                <ul>
-                    {topicsList.map(topic => <li>{topic}</li>)}
-                </ul>
-            </div>  
-        );
-    }
-}
-
-ReactDOM.render(
-<StoryBox />, document.getElementById('story-app')
-);
-
 class Comment extends React.Component {
     render() {
         return(
@@ -28,10 +5,9 @@ class Comment extends React.Component {
                 <p className="panel-heading text-success">{this.props.author}</p>
                 <hr/>
                 <p className="panel-body">{this.props.body}</p>
-                <div className="panel-footer">
-                    <a href="#" className="text-danger text-right">
+                <div className="panel-footer clearfix">
+                    <a href="#" className="text-danger pull-right">
                         Delete comment
-                        Animation: magic move from here
                     </a>
                 </div>
             </div>
@@ -40,22 +16,38 @@ class Comment extends React.Component {
 }
 
 class CommentBox extends React.Component {
+    constructor() {
+        super();
+
+        this.state = {
+            showComments: false
+        }
+    }
+
     render() {
         const comments = this._getComments();
+        let commentNodes;
+        let buttonText = 'Show comments';
+
+        if(this.state.showComments) {
+            buttonText = 'Hide comments';
+            commentNodes = <div>{comments}</div>;
+        }
         return(
             <div className="jumbotron">
                 <h3 className="text-uppercase text-info">Comments</h3>
                 <hr/>
-
                 <h4 className="text-uppercase text-muted">{this._getCommentsTitle(comments.length)}</h4>
+                <button className="btn btn-primary pull-right" onClick={this._handleClick.bind(this)}>{buttonText}</button>
                 <br/>
                 <br/>
-
-                <div>
-                    {comments}
-                </div>
+                {commentNodes}
             </div>
         );
+    }
+
+    _handleClick() {
+        this.setState({showComments: !this.state.showComments});
     }
 
     _getComments() {
@@ -80,5 +72,5 @@ class CommentBox extends React.Component {
 }
 
 ReactDOM.render(
-    <CommentBox />, document.getElementById('comment')
+    <CommentBox />, document.getElementById('story-app')
 );
