@@ -20,7 +20,11 @@ class CommentBox extends React.Component {
         super();
 
         this.state = {
-            showComments: false
+            showComments: false,
+            comments: [
+                {id: 1, author: 'Morgan McCircuit', body: 'Great picture!'},
+                {id: 2, author: 'Bending Bender', body: 'Excellent stuff'}
+            ]
         }
     }
 
@@ -35,6 +39,7 @@ class CommentBox extends React.Component {
         }
         return(
             <div className="jumbotron">
+                <CommentForm addComment={this._addComment.bind(this)} />
                 <h3 className="text-uppercase text-info">Comments</h3>
                 <hr/>
                 <h4 className="text-uppercase text-muted">{this._getCommentsTitle(comments.length)}</h4>
@@ -46,17 +51,24 @@ class CommentBox extends React.Component {
         );
     }
 
+    _addComment(author, body) {
+        const comment = {
+            id: this.state.comments.length + 1,
+            author,
+            body
+        }
+        this.setState({comments: this.state.comments.concat([comment]) });
+    }
+
     _handleClick() {
         this.setState({showComments: !this.state.showComments});
     }
 
     _getComments() {
-        const commentList = [
-            {id: 1, author: 'Morgan McCircuit', body: 'Great picture!'},
-            {id: 2, author: 'Bending Bender', body: 'Excellent stuff'}
-        ];
-        return commentList.map(comment => {
-            return (<Comment author={comment.author} body={comment.body} key={comment.id} />);
+        return this.state.comments.map((comment) => {
+            return (
+                <Comment author={comment.author} body={comment.body} key={comment.id} />
+            );
         });
     }
 
@@ -68,6 +80,42 @@ class CommentBox extends React.Component {
         } else {
             return `${commentCount} comments`;
         }
+    }
+}
+
+class CommentForm extends React.Component {
+    render() {
+        return (
+            <form onSubmit={this._handleSubmit.bind(this)}>
+                <h2 className="text-uppercase">Join the discussion</h2>
+                <div className="well">
+                    <h3 className="text-uppercase">New Comment</h3>
+                    <input className="form-control form-group" placeholder="What's your name?" ref={(input) => this._author = input}/>
+                    <textarea className="form-control form-group" placeholder="Join the discussion..." ref={(textarea) => this._body = textarea}></textarea>
+                    <button className="btn btn-lg btn-warning" type="submit">
+                        Post comment
+                    </button>
+                </div>
+            </form>
+        );
+    }
+
+    _addComment(author, body) {
+        const comment = {
+            id: this.state.comments.length + 1,
+            author,
+            body
+        };
+        this.setSate({comments: this.state.comments.concat([comment])});
+    }
+
+    _handleSubmit(event) {
+        event.preventDefault();
+
+        let author = this._author;
+        let body = this._body;
+
+        this.props.addComment(author.value, body.value);
     }
 }
 
